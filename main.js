@@ -161,8 +161,6 @@ async function get_report_for_url(url){
         final_data = []
     ;
 
-    // urls_just_processed = [start_url];
-
     await asyncForEach(
             urls_just_processed,
             async (url) => {
@@ -181,8 +179,6 @@ async function get_report_for_url(url){
             }
         )
     ;
-
-    console.dir(final_data);
 
     const
         file = __dirname + '/' + main_domain + '.json',
