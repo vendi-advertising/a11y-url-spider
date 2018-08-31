@@ -181,7 +181,7 @@ async function get_report_for_url(url){
     ;
 
     const
-        file = __dirname + '/' + main_domain + '.json',
+        file = __dirname + '/reports/' + main_domain + '.json',
         data = {
             start_url,
             final_data,
