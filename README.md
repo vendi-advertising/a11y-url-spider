@@ -3,6 +3,13 @@
 ## Install
     npm install
 
+## Additional packages needed for Chrome:
+NOTE: Some of these packages list the `-dev` first but you probably only need the main library
+
+    sudo apt install libx11-xcb-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxi-dev \
+    libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 libatk1.0-0 \
+    libatk-bridge2.0-0 libgtk-3-0 -y
+
 ## Run
     node main.js
 
