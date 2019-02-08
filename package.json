@@ -12,14 +12,14 @@
     "array-unique": "^0.3.2",
     "ends-with": "^1.0.1",
     "jsonfile": "^4.0.0",
-    "normalize-url": "^3.2.0",
-    "puppeteer": "^1.7.0",
+    "normalize-url": "^3.3.0",
+    "puppeteer": "^1.12.2",
     "sha1": "^1.1.1",
     "sha256": "^0.2.0",
-    "url-parse": "^1.4.3"
+    "url-parse": "^1.4.4"
   },
   "devDependencies": {
-    "axe-core": "^3.1.1",
+    "axe-core": "^3.1.2",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0"
   }
