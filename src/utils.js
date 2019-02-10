@@ -2,6 +2,8 @@
 
 const normalizeUrl = require('normalize-url');
 const endsWith      = require('ends-with');
+const parse         = require('url-parse');
+const unique        = require('array-unique');
 
 merge_and_dedupe_arrays = (arr) => {
     //https://stackoverflow.com/a/27664971/231316
@@ -67,7 +69,7 @@ get_only_clean_urls = async(urls, main_domain) => {
                                     return false;
                                 }
 
-                                if(utils.path_ends_with_bad_file_extension(this_url_parts.pathname)){
+                                if(path_ends_with_bad_file_extension(this_url_parts.pathname)){
                                     // console.log(this_url_parts.pathname);
                                     // console.log('bad extension');
                                     return false;
@@ -125,7 +127,7 @@ get_only_clean_urls = async(urls, main_domain) => {
 
                             }
                         )
-                        .map(utils.vendi_normalized_url),
+                        .map(vendi_normalized_url),
         unique_only = unique(http_only)
     ;
 

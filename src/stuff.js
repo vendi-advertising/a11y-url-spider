@@ -12,18 +12,31 @@ const fetch         = require('node-fetch');
 
 //Sorry for the stupid name, just need to organize things a bit!!!
 
-getData = async (url) => {
+getUrlInfo = async (url) => {
+    const
+        ret = {
+            url,
+            contentType: null,
+            statusCode: null,
+            error: null,
+        }
+    ;
+
     try {
 
         const
             response = await fetch(url)
         ;
 
-        console.dir(response);
+        ret.contentType = response.headers.get('content-type');
+        ret.statusCode = response.status;
     } catch (error) {
-
-        console.log(error);
+        ret.error = error;
     }
+
+    console.dir(ret);
+
+    return ret;
 };
 
 async function worker(urls, main_domain, master_list){
@@ -45,6 +58,7 @@ async function worker(urls, main_domain, master_list){
             await utils.asyncForEach(
                     urls,
                     async (url) => {
+
                         if(master_list.includes(url)){
                             return;
                         }
@@ -52,6 +66,7 @@ async function worker(urls, main_domain, master_list){
                         console.debug('Looking at ' + url);
 
                         const
+                            url_info = await getUrlInfo(url),
                             these_urls = await get_urls_on_single_page_as_array_of_strings(url, main_domain),
                             merged = utils.merge_and_dedupe_arrays([ ret, these_urls ]),
                             unique_only = unique(merged)
