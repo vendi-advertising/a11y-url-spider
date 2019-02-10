@@ -7,8 +7,24 @@ const path          = require('path');
 const puppeteer     = require('puppeteer');
 const unique        = require('array-unique');
 const utils         = require('./utils');
+const fetch         = require('node-fetch');
+
 
 //Sorry for the stupid name, just need to organize things a bit!!!
+
+getData = async (url) => {
+    try {
+
+        const
+            response = await fetch(url)
+        ;
+
+        console.dir(response);
+    } catch (error) {
+
+        console.log(error);
+    }
+};
 
 async function worker(urls, main_domain, master_list){
 
@@ -34,6 +50,7 @@ async function worker(urls, main_domain, master_list){
                         }
 
                         console.debug('Looking at ' + url);
+
                         const
                             these_urls = await get_urls_on_single_page_as_array_of_strings(url, main_domain),
                             merged = utils.merge_and_dedupe_arrays([ ret, these_urls ]),
