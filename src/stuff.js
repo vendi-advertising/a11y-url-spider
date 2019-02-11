@@ -34,88 +34,35 @@ getUrlInfo = async (url) => {
         ret.error = error;
     }
 
-    console.dir(ret);
-
     return ret;
 };
 
-async function worker(urls, main_domain, master_list){
+isUrlHtml = (urlInfo) => {
+    return urlInfo.contentType.includes('text/html') || urlInfo.contentType.includes('application/xhtml+xml');
+}
 
-    if(!Array.isArray(urls)){
-        urls = [urls];
-    }
+async function worker(urls){
 
-    if(!master_list){
-        master_list = [];
-    }
-
-    let
+    const
         ret = []
     ;
 
-    const
-        start = async() => {
-            await utils.asyncForEach(
-                    urls,
-                    async (url) => {
-
-                        if(master_list.includes(url)){
-                            return;
-                        }
-
-                        console.debug('Looking at ' + url);
-
-                        const
-                            url_info = await getUrlInfo(url),
-                            these_urls = await get_urls_on_single_page_as_array_of_strings(url, main_domain),
-                            merged = utils.merge_and_dedupe_arrays([ ret, these_urls ]),
-                            unique_only = unique(merged)
-                        ;
-
-                        ret = unique_only;
-                    }
-                )
-        }
-    ;
-
-    await start();
-
-    return ret;
-};
-
-async function get_urls_on_single_page_as_array_of_strings(url, main_domain){
-    const
-        chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}}),
-        page = await chrome_browser.newPage()
-    ;
-
-    let
-        error_flag = false,
-        unq = []
-    ;
-
-    await page
-            .goto(url)
-            .catch(
-                (err) => {
-                    console.error(err);
-                    error_flag = true;
-                }
-            )
-        ;
-
-    if(!error_flag){
-
+    for await( const urlObj of urls ) {
         const
-            hrefs = await page.$$eval('a', as => as.map(a => a.href))
+            url_info = await getUrlInfo(urlObj.url),
+            is_html = isUrlHtml(url_info),
+            subUrlRequestStatus = is_html ? await browser.get_urls_on_single_page_as_array_of_strings(urlObj.url) : [],
+            result = {
+                ...url_info,
+                propertyScanUrlId: urlObj.propertyScanUrlId,
+                subUrlRequestStatus,
+            }
         ;
 
-        unq = utils.get_only_clean_urls(hrefs, main_domain);
-
-        await chrome_browser.close();
+        ret.push(result);
     }
 
-    return unq;
+    return ret;
 };
 
 module.exports.worker = worker;
