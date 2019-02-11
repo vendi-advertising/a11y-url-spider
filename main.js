@@ -8,8 +8,16 @@ const stuff         = require('./src/stuff.js');
 (async () => {
 
     const
-        args = process.argv.slice(2)
+        REQUIRED_NODE_VERSION_MAJOR = 11,
+        args = process.argv.slice(2),
+        version_string = process.version,
+        version_parts = version_string.replace(/[^\d\.]/g, '').split('.'),
+        version_major = version_parts.length >= 0 ? version_parts[0] : 0
     ;
+
+    if(version_major < REQUIRED_NODE_VERSION_MAJOR){
+        throw `Minimum of Node version ${REQUIRED_NODE_VERSION_MAJOR} is required`;
+    }
 
     if(!args.length) {
         throw 'Please provide the url as the first argument';
