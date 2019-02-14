@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "array-unique": "^0.3.2",
+    "command-line-args": "^5.0.2",
     "ends-with": "^1.0.1",
     "jsonfile": "^4.0.0",
     "node-fetch": "^2.3.0",
