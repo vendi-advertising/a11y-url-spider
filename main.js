@@ -16,12 +16,19 @@ const settings      = require('./src/settings.js');
     settings.test_node_version(REQUIRED_NODE_VERSION_MAJOR);
 
     const
-        token = settings.get_scanner_token(),
-        urls = await api.get_urls_to_spider(token),
+        global_options = settings.get_and_validate_scanner_options()
+    ;
+
+    if(!global_options){
+        return;
+    }
+
+    const
+        urls = await api.get_urls_to_spider(global_options),
         results = await stuff.worker(urls)
     ;
 
-    await api.send_url_report_to_server(token, results);
+    await api.send_url_report_to_server(global_options, results);
 
     // console.dir( results );
 

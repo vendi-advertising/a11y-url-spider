@@ -22,7 +22,33 @@ get_scanner_token = () => {
     }
 
     return args.shift();
-}
+};
+
+get_and_validate_scanner_options = () => {
+    const
+        commandLineArgs = require('command-line-args'),
+        optionDefinitions = [
+            { name: 'token', alias: 't'},
+            { name: 'host', alias: 'h' },
+            { name: 'port', alias: 'p', type: Number, defaultValue: 80 },
+            { name: 'secure', alias: 's', type: Boolean, defaultValue: true },
+            { name: 'api-version', alias: 'v', type: Number, defaultValue: 1 },
+          ],
+        global_options = commandLineArgs(optionDefinitions)
+    ;
+
+    if(!global_options.token){
+        console.error('Please provide a value for the --token parameter');
+        return null;
+    }
+
+    if(!global_options.host){
+        console.error('Please provide a value for the --host parameter');
+        return null;
+    }
+
+    return global_options;
+};
 
 module.exports.test_node_version = test_node_version;
-module.exports.get_scanner_token = get_scanner_token;
+module.exports.get_and_validate_scanner_options = get_and_validate_scanner_options;
