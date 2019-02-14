@@ -19,7 +19,7 @@ get_urls_to_spider = async (global_options) => {
 
     //For now we are always jamming Vendi back in since the API request pulls
     //the URL from the queue
-    return [...urls, {url: 'https://vendiadvertising.com/', propertyScanUrlId: 1,}];
+    return [...urls];
 };
 
 send_url_report_to_server = async(global_options, report) => {
@@ -38,7 +38,7 @@ send_url_report_to_server = async(global_options, report) => {
             method: 'post',
         },
         response = await fetch(url, options),
-        json = await response.body
+        json = await response.json()
     ;
 
     console.dir(json);

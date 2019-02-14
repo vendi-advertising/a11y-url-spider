@@ -69,60 +69,6 @@ get_only_clean_urls = async(urls, main_domain) => {
                                     return false;
                                 }
 
-                                if(path_ends_with_bad_file_extension(this_url_parts.pathname)){
-                                    // console.log(this_url_parts.pathname);
-                                    // console.log('bad extension');
-                                    return false;
-                                }
-
-                                //I don't remember which site this was from
-                                if(href.includes('external-redirect')){
-                                    return false;
-                                }
-
-                                //Specific Domain/URL hacks
-                                switch(this_url_parts.hostname){
-
-                                    case 'www.stoptheclot.org':
-                                        if(this_url_parts.pathname.includes('/curriculum')){
-                                            return false;
-                                        }
-
-                                        break;
-
-                                    case 'www.altra.org':
-
-                                        if(this_url_parts.pathname.includes('/ebooks/')){
-                                            return false;
-                                        }
-
-                                        if(this_url_parts.pathname.includes('~')){
-                                            return false;
-                                        }
-
-                                        if(this_url_parts.pathname.includes('ai1ec_post_ids')){
-                                            return false;
-                                        }
-
-                                        if(this_url_parts.pathname.includes('action=export_events')){
-                                            return false;
-                                        }
-
-                                        break;
-
-                                    case 'www.westerntc.edu':
-                                        if(this_url_parts.pathname.includes('/presidents-list/')){
-                                            return false;
-                                        }
-
-                                        if(this_url_parts.pathname.includes('/node/77/')){
-                                            return false;
-                                        }
-
-                                        break;
-
-                                }
-
                                 return true;
 
                             }

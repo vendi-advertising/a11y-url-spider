@@ -25,11 +25,14 @@ getUrlInfo = async (url) => {
     try {
 
         const
-            response = await fetch(url)
+            response = await fetch(url),
+            body = await response.arrayBuffer(),
+            bodyLength = body.byteLength
         ;
 
         ret.contentType = response.headers.get('content-type');
         ret.statusCode = response.status;
+        ret.byteSize = bodyLength;
     } catch (error) {
         ret.error = error;
     }
@@ -54,7 +57,7 @@ async function worker(urls){
             subUrlRequestStatus = is_html ? await browser.get_urls_on_single_page_as_array_of_strings(urlObj.url) : [],
             result = {
                 ...url_info,
-                propertyScanUrlId: urlObj.propertyScanUrlId,
+                scanUrlId: urlObj.scanUrlId,
                 subUrlRequestStatus,
             }
         ;
