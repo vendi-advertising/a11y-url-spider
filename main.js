@@ -23,13 +23,39 @@ const settings      = require('./src/settings.js');
         return;
     }
 
-    const
-        urls = await api.get_urls_to_spider(global_options),
-        results = await stuff.worker(urls)
+    let
+        task_lock = false
     ;
 
-    await api.send_url_report_to_server(global_options, results);
+    const
+        CronJob = require('cron').CronJob,
+        task = new CronJob(
+                '*/5 * * * * *',
+                async () => {
 
-    // console.dir( results );
+                    if(task_lock){
+                        return;
+                    }
+
+                    task_lock = true;
+    
+                    const
+                        urls = await api.get_urls_to_spider(global_options),
+                        results = await stuff.worker(urls)
+                    ;
+
+                    if(urls.length){
+                        await api.send_url_report_to_server(global_options, results);
+                    }
+            
+                    task_lock = false;
+                },
+                null,
+                true,
+                'America/Chicago'
+            )
+    ;
+
+    task.start();
 
 })();

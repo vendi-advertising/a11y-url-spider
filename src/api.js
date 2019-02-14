@@ -37,11 +37,23 @@ send_url_report_to_server = async(global_options, report) => {
             body,
             method: 'post',
         },
-        response = await fetch(url, options),
-        json = await response.json()
+        response = await fetch(url, options)
     ;
 
-    console.dir(json);
+    let
+        response_body
+    ;
+
+    if(response.ok){
+        response_body = await response.json();
+        console.dir(response_body);
+    }else{
+        response_body = await response.text();
+        console.dir(response_body);
+        throw 'Error';
+    }
+
+    
     // console.dir(body);
 };
 
