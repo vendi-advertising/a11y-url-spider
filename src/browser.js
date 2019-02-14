@@ -31,7 +31,25 @@ get_urls_on_single_page_as_array_of_strings = async(url) => {
     if(!results.error){
 
         const
-            hrefs = await page.$$eval('a', as => as.map(a => a.href)),
+            hrefs = await page.$$eval(
+                '*',
+                (as) => {
+                    return as.map(
+                        (a) => {
+
+                            if(a.href){
+                                return a.href;
+                            }
+
+                            if(a.src){
+                                return a.src;
+                            }
+
+                            return '';
+                        }
+                    );
+                }
+            ),
             parse = require('url-parse'),
             main_domain = parse(url).hostname
         ;

@@ -7,38 +7,39 @@ const parse         = require('url-parse');
 const stuff         = require('./src/stuff.js');
 const settings      = require('./src/settings.js');
 
-(async () => {
 
-    const
-        REQUIRED_NODE_VERSION_MAJOR = 11
-    ;
+const
+    REQUIRED_NODE_VERSION_MAJOR = 11
+;
 
-    settings.test_node_version(REQUIRED_NODE_VERSION_MAJOR);
+settings.test_node_version(REQUIRED_NODE_VERSION_MAJOR);
 
-    const
-        global_options = settings.get_and_validate_scanner_options()
-    ;
+const
+    global_options = settings.get_and_validate_scanner_options()
+;
 
-    if(!global_options){
-        return;
-    }
+if(!global_options){
+    return;
+}
 
-    let
-        task_lock = false
-    ;
+let
+    task_lock = false
+;
 
-    const
-        CronJob = require('cron').CronJob,
-        task = new CronJob(
-                '*/5 * * * * *',
-                async () => {
+const
+    CronJob = require('cron').CronJob,
+    task = new CronJob(
+            '*/5 * * * * *',
+            async () => {
 
-                    if(task_lock){
-                        return;
-                    }
+                if(task_lock){
+                    return;
+                }
+
+                try{
 
                     task_lock = true;
-    
+
                     const
                         urls = await api.get_urls_to_spider(global_options),
                         results = await stuff.worker(urls)
@@ -47,15 +48,18 @@ const settings      = require('./src/settings.js');
                     if(urls.length){
                         await api.send_url_report_to_server(global_options, results);
                     }
-            
+
                     task_lock = false;
-                },
-                null,
-                true,
-                'America/Chicago'
-            )
-    ;
+                } catch(error){
+                    console.error(error);
+                    throw error;
+                }
+                        
+            },
+            null,
+            true,
+            'America/Chicago'
+        )
+;
 
-    task.start();
-
-})();
+task.start();

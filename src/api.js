@@ -14,7 +14,7 @@ get_urls_to_spider = async (global_options) => {
         },
         response = await fetch(url, options),
         json = await response.json(),
-        urls = json.urls
+        urls = json.urls || []
     ;
 
     //For now we are always jamming Vendi back in since the API request pulls

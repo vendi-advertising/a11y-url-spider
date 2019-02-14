@@ -15,7 +15,7 @@ vendi_normalized_url = (url) => {
                 url,
                 {
                     normalizeHttp: true,
-                    stripWWW: true,
+                    stripWWW: false,
                 }
         );
 }
@@ -53,6 +53,10 @@ get_only_clean_urls = async(urls, main_domain) => {
         http_only = urls
                         .filter(
                             (href) => {
+
+                                if(!href){
+                                    return false;
+                                }
 
                                 const
                                     this_url_parts = parse(href, true)
