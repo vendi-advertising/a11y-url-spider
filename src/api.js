@@ -4,7 +4,7 @@ get_urls_to_spider = async (token) => {
     const
         fetch = require('node-fetch'),
         https = require("https"),
-        url = 'https://a11y.local/api/v1/batch/request',
+        url = 'https://127.0.0.1:8000/api/v1/batch/request',
         headers = {
             'X-AUTH-TOKEN': token,
         },
@@ -31,7 +31,7 @@ send_url_report_to_server = async(token, report) => {
     const
         fetch = require('node-fetch'),
         https = require("https"),
-        url = 'https://a11y.local/api/v1/batch/submit',
+        url = 'https://127.0.0.1:8000/api/v1/batch/submit',
         headers = {
             'X-AUTH-TOKEN': token,
         },
