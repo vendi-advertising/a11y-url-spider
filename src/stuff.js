@@ -1,12 +1,6 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
 const browser       = require('./browser');
-const fs            = require('fs');
-const parse         = require('url-parse');
-const path          = require('path');
-const puppeteer     = require('puppeteer');
-const unique        = require('array-unique');
-const utils         = require('./utils');
 const fetch         = require('node-fetch');
 
 
