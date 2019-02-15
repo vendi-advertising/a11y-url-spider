@@ -62,4 +62,39 @@ get_urls_on_single_page_as_array_of_strings = async(url) => {
     return results;
 };
 
+get_report_for_url = async(url) => {
+    console.debug('Running report for ' + url);
+
+    const puppeteer = require('puppeteer');
+    const path = require('path');
+
+    const chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}});
+    const page = await chrome_browser.newPage();
+    await page.goto(url).catch((err) => {console.error(err);});
+    await page.addScriptTag({path: path.resolve(__dirname, '../node_modules/axe-core/axe.min.js')});
+
+    const ret = await page.evaluate(
+                        async () => {
+                            axe
+                                .configure(
+                                    {
+                                        runOnly:
+                                            {
+                                                type: "tag",
+                                                values: ["wcag2a", "wcag2aa"]
+                                            }
+                                    }
+                            )
+                            ;
+                            return axe.run();
+                        }
+                    )
+    ;
+
+    await chrome_browser.close();
+
+    return ret;
+};
+
 module.exports.get_urls_on_single_page_as_array_of_strings = get_urls_on_single_page_as_array_of_strings;
+module.exports.get_report_for_url = get_report_for_url;

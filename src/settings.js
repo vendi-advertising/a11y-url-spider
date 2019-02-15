@@ -29,6 +29,7 @@ get_and_validate_scanner_options = () => {
         commandLineArgs = require('command-line-args'),
         optionDefinitions = [
             { name: 'token', alias: 't'},
+            { name: 'mode', alias: 'm' },
             { name: 'host', alias: 'h' },
             { name: 'port', alias: 'p', type: Number, defaultValue: 80 },
             { name: 'secure', alias: 's', type: Boolean, defaultValue: true },
@@ -44,6 +45,11 @@ get_and_validate_scanner_options = () => {
 
     if(!global_options.host){
         console.error('Please provide a value for the --host parameter');
+        return null;
+    }
+
+    if(!global_options.mode){
+        console.error('Please provide a value for the --mode parameter, one of crawler or a11y');
         return null;
     }
 

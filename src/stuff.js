@@ -62,4 +62,26 @@ async function worker(urls){
     return ret;
 };
 
+async function worker_a11y(urls){
+
+    const
+        ret = []
+    ;
+
+    for await( const urlObj of urls ) {
+        const
+            subUrlRequestStatus = await browser.get_report_for_url(urlObj.url),
+            result = {
+                scanUrlId: urlObj.scanUrlId,
+                subUrlRequestStatus,
+            }
+        ;
+
+        ret.push(result);
+    }
+
+    return ret;
+};
+
 module.exports.worker = worker;
+module.exports.worker_a11y = worker_a11y;

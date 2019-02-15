@@ -3,7 +3,7 @@
 get_urls_to_spider = async (global_options) => {
     const
         fetch = require('node-fetch'),
-        url = get_url_from_options(global_options, '/batch/request'),
+        url = get_url_from_options(global_options, 'get'),
         headers = {
             'X-AUTH-TOKEN': global_options.token,
         },
@@ -25,7 +25,7 @@ get_urls_to_spider = async (global_options) => {
 send_url_report_to_server = async(global_options, report) => {
     const
         fetch = require('node-fetch'),
-        url = get_url_from_options(global_options, '/batch/submit'),
+        url = get_url_from_options(global_options, 'submit'),
         headers = {
             'X-AUTH-TOKEN': global_options.token,
         },
@@ -57,7 +57,7 @@ send_url_report_to_server = async(global_options, report) => {
     // console.dir(body);
 };
 
-get_url_from_options = (global_options, path) => {
+get_url_from_options = (global_options, direction) => {
     let
         url = 'http'
     ;
@@ -78,7 +78,23 @@ get_url_from_options = (global_options, path) => {
 
     url += global_options['api-version'];
 
-    url += path;
+    switch(global_options.mode){
+        case 'crawler':
+            url += '/scanner/crawler';
+        case 'a11y':
+            url += '/scanner/a11y';
+        default:
+            throw 'Unknown mode: ' + global_options.mode;
+    }
+
+    switch(direction){
+        case 'get':
+            url += '/get';
+        case 'submit':
+            url += '/send';
+        default:
+            throw 'Unknown direction: ' + direction;
+    }
 
     return url;
 }
