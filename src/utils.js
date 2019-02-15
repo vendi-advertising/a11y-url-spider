@@ -5,11 +5,6 @@ const endsWith      = require('ends-with');
 const parse         = require('url-parse');
 const unique        = require('array-unique');
 
-merge_and_dedupe_arrays = (arr) => {
-    //https://stackoverflow.com/a/27664971/231316
-    return [...new Set([].concat(...arr))];
-}
-
 vendi_normalized_url = (url) => {
     return normalizeUrl(
                 url,
@@ -18,29 +13,6 @@ vendi_normalized_url = (url) => {
                     stripWWW: false,
                 }
         );
-}
-
-path_ends_with_bad_file_extension = (path) => {
-    const
-        bad = ['pdf','jpg','gif','png','docx','xlsx','doc','xls',],
-        path_lc = path.toLowerCase()
-    ;
-
-    return bad
-            .some(
-                (ext) => {
-
-                    return endsWith(path_lc, '.' + ext) ;
-
-                }
-            )
-        ;
-}
-
-asyncForEach = async (array, callback) => {
-    for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array)
-    }
 }
 
 get_only_clean_urls = async(urls, main_domain) => {
@@ -84,8 +56,4 @@ get_only_clean_urls = async(urls, main_domain) => {
     return unique_only;
 }
 
-module.exports.merge_and_dedupe_arrays = merge_and_dedupe_arrays;
-module.exports.vendi_normalized_url = vendi_normalized_url;
-module.exports.path_ends_with_bad_file_extension = path_ends_with_bad_file_extension;
-module.exports.asyncForEach = asyncForEach;
 module.exports.get_only_clean_urls = get_only_clean_urls;
