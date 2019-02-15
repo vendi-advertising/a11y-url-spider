@@ -1,9 +1,6 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8, esversion: 8 */
 
 const api           = require('./src/api.js');
-const cache         = require('./src/cache.js');
-const jsonfile      = require('jsonfile');
-const parse         = require('url-parse');
 const stuff         = require('./src/stuff.js');
 const settings      = require('./src/settings.js');
 
