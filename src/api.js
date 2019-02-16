@@ -36,7 +36,12 @@ send_url_report_to_server = async(global_options, report) => {
             agent,
             body,
             method: 'post',
-        },
+        }
+    ;
+
+    console.log('Submitting to URL: ' + url);
+
+    const
         response = await fetch(url, options)
     ;
 
@@ -99,7 +104,7 @@ get_url_from_options = (global_options, direction) => {
         case 'submit':
             url += '/send';
             break;
-            
+
         default:
             throw 'Unknown direction: ' + direction;
     }
