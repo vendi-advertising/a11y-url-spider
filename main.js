@@ -41,33 +41,28 @@ const
                         urls = await api.get_urls_to_spider(global_options)
                     ;
 
+                    let
+                        results
+                    ;
+
                     switch(global_options.mode){
                         case 'crawler':
-
-                            const
-                                results = await stuff.worker(urls)
-                            ;
-
-                            if(urls.length){
-                                await api.send_url_report_to_server(global_options, results);
-                            }
-
+                            results = await stuff.worker(urls);
                             break;
                         
                         case 'a11y':
-                            const
-                                results_a = await stuff.worker_a11y(urls)
-                            ;
-
-                            console.dir(results_a);
-                        
-
+                            results = await stuff.worker_a11y(urls);
                             break;
                         
                         default:
                             throw 'Unknown mode: ' + global_options.mode;
-
                     }
+
+
+                    if(urls.length){
+                        await api.send_url_report_to_server(global_options, results);
+                    }
+
 
                     task_lock = false;
                 } catch(error){
