@@ -78,11 +78,11 @@ get_report_for_url = async(url) => {
                             axe
                                 .configure(
                                     {
-                                        runOnly:
-                                            {
-                                                type: "tag",
-                                                values: ["wcag2a", "wcag2aa"]
-                                            }
+                                        // runOnly:
+                                        //     {
+                                        //         type: "tag",
+                                        //         values: ["wcag2a", "wcag2aa"]
+                                        //     }
                                     }
                             )
                             ;
