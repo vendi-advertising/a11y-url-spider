@@ -81,8 +81,12 @@ get_url_from_options = (global_options, direction) => {
     switch(global_options.mode){
         case 'crawler':
             url += '/scanner/crawler';
+            break;
+
         case 'a11y':
             url += '/scanner/a11y';
+            break;
+
         default:
             throw 'Unknown mode: ' + global_options.mode;
     }
@@ -90,8 +94,12 @@ get_url_from_options = (global_options, direction) => {
     switch(direction){
         case 'get':
             url += '/get';
+            break;
+
         case 'submit':
             url += '/send';
+            break;
+            
         default:
             throw 'Unknown direction: ' + direction;
     }
