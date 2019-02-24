@@ -35,7 +35,7 @@ getUrlInfo = async (url) => {
 };
 
 isUrlHtml = (urlInfo) => {
-    return urlInfo.contentType.includes('text/html') || urlInfo.contentType.includes('application/xhtml+xml');
+    return urlInfo.contentType && (urlInfo.contentType.includes('text/html') || urlInfo.contentType.includes('application/xhtml+xml'));
 }
 
 async function worker(urls){
