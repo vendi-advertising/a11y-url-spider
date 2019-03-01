@@ -8,7 +8,7 @@ get_basic_headers = (global_options) => {
     ;
 
     if(global_options['http-username'] && global_options['http-password']){
-        headers.Authorization = 'Basic ' + Buffer.from(global_options['http-username'] + ":" + global['http-password']).toString('base64');
+        headers.Authorization = 'Basic ' + Buffer.from(global_options['http-username'] + ":" + global_options['http-password']).toString('base64');
     }
 
     return headers;
