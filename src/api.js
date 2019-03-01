@@ -1,12 +1,24 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
+get_basic_headers = (global_options) => {
+    const
+        headers = {
+            'X-AUTH-TOKEN': global_options.token,
+        }
+    ;
+
+    if(global_options['http-username'] && global_options['http-password']){
+        headers.Authorization = 'Basic ' + Buffer.from(global_options['http-username'] + ":" + global['http-password']).toString('base64');
+    }
+
+    return headers;
+};
+
 get_urls_to_spider = async (global_options) => {
     const
         fetch = require('node-fetch'),
         url = get_url_from_options(global_options, 'get'),
-        headers = {
-            'X-AUTH-TOKEN': global_options.token,
-        },
+        headers = get_basic_headers(global_options),
         agent = get_requestor(global_options),
         options = {
             headers,
@@ -26,9 +38,7 @@ send_url_report_to_server = async(global_options, report) => {
     const
         fetch = require('node-fetch'),
         url = get_url_from_options(global_options, 'submit'),
-        headers = {
-            'X-AUTH-TOKEN': global_options.token,
-        },
+        headers = get_basic_headers(global_options),
         agent = get_requestor(global_options),
         body = await JSON.stringify(report),
         options = {

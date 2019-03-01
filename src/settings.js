@@ -34,6 +34,8 @@ get_and_validate_scanner_options = () => {
             { name: 'port', alias: 'p', type: Number, defaultValue: 80 },
             { name: 'secure', alias: 's', type: Boolean, defaultValue: true },
             { name: 'api-version', alias: 'v', type: Number, defaultValue: 1 },
+            { name: 'http-username' },
+            { name: 'http-password' },
           ],
         global_options = commandLineArgs(optionDefinitions)
     ;
