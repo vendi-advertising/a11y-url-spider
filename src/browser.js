@@ -30,33 +30,38 @@ get_urls_on_single_page_as_array_of_strings = async(url) => {
 
     if(!results.error){
 
-        const
-            hrefs = await page.$$eval(
-                '*',
-                (as) => {
-                    return as.map(
-                        (a) => {
+        try {
+            const
+                hrefs = await page.$$eval(
+                    '*',
+                    (as) => {
+                        return as.map(
+                            (a) => {
 
-                            if(a.href){
-                                return a.href;
+                                if(a.href){
+                                    return a.href;
+                                }
+
+                                if(a.src){
+                                    return a.src;
+                                }
+
+                                return '';
                             }
+                        );
+                    }
+                ),
+                parse = require('url-parse'),
+                main_domain = parse(url).hostname
+            ;
 
-                            if(a.src){
-                                return a.src;
-                            }
-
-                            return '';
-                        }
-                    );
-                }
-            ),
-            parse = require('url-parse'),
-            main_domain = parse(url).hostname
-        ;
-
-        results.urls = await utils.get_only_clean_urls(hrefs, main_domain);
-
-        await chrome_browser.close();
+            results.urls = await utils.get_only_clean_urls(hrefs, main_domain);
+        } catch (e) {
+            results.error = e;
+            console.error(e);
+        } finall {
+            await chrome_browser.close();
+        }
     }
 
     return results;
@@ -70,28 +75,33 @@ get_report_for_url = async(url) => {
 
     const chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}});
     const page = await chrome_browser.newPage();
-    await page.goto(url).catch((err) => {console.error(err);});
-    await page.addScriptTag({path: path.resolve(__dirname, '../node_modules/axe-core/axe.min.js')});
 
-    const ret = await page.evaluate(
-                        async () => {
-                            axe
-                                .configure(
-                                    {
-                                        // runOnly:
-                                        //     {
-                                        //         type: "tag",
-                                        //         values: ["wcag2a", "wcag2aa"]
-                                        //     }
-                                    }
-                            )
-                            ;
-                            return axe.run();
-                        }
-                    )
-    ;
-
-    await chrome_browser.close();
+    try {
+        await page.goto(url).catch((err) => {console.error(err);});
+        await page.addScriptTag({path: path.resolve(__dirname, '../node_modules/axe-core/axe.min.js')});
+    
+        const ret = await page.evaluate(
+                            async () => {
+                                axe
+                                    .configure(
+                                        {
+                                            // runOnly:
+                                            //     {
+                                            //         type: "tag",
+                                            //         values: ["wcag2a", "wcag2aa"]
+                                            //     }
+                                        }
+                                )
+                                ;
+                                return axe.run();
+                            }
+                        )
+        ;
+    } catch (e) {
+        ret = {error: e};
+    } finally {
+        await chrome_browser.close();
+    }
 
     return ret;
 };
