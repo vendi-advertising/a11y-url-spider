@@ -76,6 +76,8 @@ get_report_for_url = async(url) => {
     const chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}});
     const page = await chrome_browser.newPage();
 
+    let ret;
+
     try {
         await page.goto(url).catch((err) => {console.error(err);});
         await page.addScriptTag({path: path.resolve(__dirname, '../node_modules/axe-core/axe.min.js')});
@@ -97,13 +99,18 @@ get_report_for_url = async(url) => {
                             }
                         )
         ;
+
+        return ret;
     } catch (e) {
-        ret = {error: e};
+        const
+            ret = {
+                error: e
+            }
+        ;
+        return ret;
     } finally {
         await chrome_browser.close();
     }
-
-    return ret;
 };
 
 module.exports.get_urls_on_single_page_as_array_of_strings = get_urls_on_single_page_as_array_of_strings;
