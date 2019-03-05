@@ -59,7 +59,7 @@ get_urls_on_single_page_as_array_of_strings = async(url) => {
         } catch (e) {
             results.error = e;
             console.error(e);
-        } finall {
+        } finally {
             await chrome_browser.close();
         }
     }
