@@ -13,67 +13,101 @@ get_browser = async () => {
 get_urls_on_single_page_as_array_of_strings = async(url) => {
 
     const
-        utils = require('./utils'),
         chrome_browser = await get_browser(),
         page = await chrome_browser.newPage(),
         results = {
+            status: 'unknown',
             error: null,
             urls: [],
         }
-    ;
-
-    let
-        error_flag = false,
-        unq = []
     ;
 
     await page
             .goto(url)
             .catch(
                 (err) => {
+                    results.status = 'error';
                     results.error = err;
                     console.error(err);
                 }
             )
-        ;
+    ;
 
-    if(!results.error){
-
-        try {
-            const
-                hrefs = await page.$$eval(
-                    '*',
-                    (as) => {
-                        return as.map(
-                            (element) => {
-
-                                if()
-
-                                if (element.href){
-                                    return element.href;
-                                }
-
-                                if (element.src){
-                                    return element.src;
-                                }
-
-                                return '';
-                            }
-                        );
-                    }
-                ),
-                parse = require('url-parse'),
-                main_domain = parse(url).hostname
-            ;
-
-            results.urls = await utils.get_only_clean_urls(hrefs, main_domain);
-        } catch (e) {
-            results.error = e;
-            console.error(e);
-        } finally {
-            await chrome_browser.close();
-        }
+    if(results.error){
+        await chrome_browser.close();
+        return results;
     }
+
+    //See if we'r not supposed to follow links on this page
+    const
+        meta = await page.$$('meta[name~=robots][content~=nofollow]')
+    ;
+
+    if(meta.length){
+        results.status = 'page-no-follow';
+        await chrome_browser.close();
+        return results;
+    }
+
+    const
+        unique = require('array-unique'),
+        parse = require('url-parse'),
+        main_domain = parse(url).hostname,
+        elements = await page.$$('*')
+        unique_urls = elements
+
+                            //First get link-like things
+                            .filter(
+                                (element) => {
+                                    return element.href || element.src;
+                                }
+                            )
+
+                            //Next, make sure that we can follow them
+                            .filter(
+                                (element) => {
+                                    return !element.rel && !element.rel.includes('nofollow');
+                                }
+                            )
+
+                            //Now get either the actual URL
+                            .map(
+                                (element) => {
+                                    return element.href || element.src;
+                                }
+                            )
+
+                            //Get only HTTP(S) links (not mailto, etc.)
+                            .filter(
+                                (url) => {
+
+                                    const
+                                        url_parts = parse(url, true)
+                                    ;
+
+                                    if (url_parts.protocol !== 'http:' && url_parts.protocol !== 'https:') {
+                                        return false;
+                                    }
+
+                                    if (main_domain !== url_parts.hostname) {
+                                        return false;
+                                    }
+
+                                    return true;
+
+                                }
+                            )
+
+                            //Remove duplicates, see https://stackoverflow.com/a/14438954/231316
+                            .filter(
+                                (url, idx, self) => {
+                                    return self.indexOf(url) === idx;
+                                }
+                            )
+    ;
+
+    results.urls = unique_urls;
+    await chrome_browser.close();
 
     return results;
 };
