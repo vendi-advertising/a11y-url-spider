@@ -122,5 +122,5 @@ get_report_for_url = async(url) => {
     }
 };
 
-module.exports.get_urls_on_single_page_as_array_of_strings = get_urls_on_single_page_as_array_of_strings;
-module.exports.get_report_for_url = get_report_for_url;
+export const get_urls_on_single_page_as_array_of_strings = get_urls_on_single_page_as_array_of_strings;
+export const get_report_for_url = get_report_for_url;
