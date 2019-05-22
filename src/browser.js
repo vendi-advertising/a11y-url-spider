@@ -45,14 +45,16 @@ get_urls_on_single_page_as_array_of_strings = async(url) => {
                     '*',
                     (as) => {
                         return as.map(
-                            (a) => {
+                            (element) => {
 
-                                if(a.href){
-                                    return a.href;
+                                if()
+
+                                if (element.href){
+                                    return element.href;
                                 }
 
-                                if(a.src){
-                                    return a.src;
+                                if (element.src){
+                                    return element.src;
                                 }
 
                                 return '';
