@@ -1,11 +1,20 @@
 /*jslint esversion: 8, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
-get_urls_on_single_page_as_array_of_strings = async(url) => {
-
+get_browser = async () => {
     const
         puppeteer = require('puppeteer'),
         utils = require('./utils'),
-        chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}}),
+        chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}})
+    ;
+
+    return chrome_browser;
+}
+
+get_urls_on_single_page_as_array_of_strings = async(url) => {
+
+    const
+        utils = require('./utils'),
+        chrome_browser = await get_browser(),
         page = await chrome_browser.newPage(),
         results = {
             error: null,
@@ -81,7 +90,7 @@ get_report_for_url = async(url) => {
     try {
         await page.goto(url).catch((err) => {console.error(err);});
         await page.addScriptTag({path: path.resolve(__dirname, '../node_modules/axe-core/axe.min.js')});
-    
+
         const ret = await page.evaluate(
                             async () => {
                                 axe
