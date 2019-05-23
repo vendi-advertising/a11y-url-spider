@@ -1,3 +1,6 @@
 /node_modules/
 /reports/
 /.cache/
+/spec/jasmine_examples/
+/lib/jasmine_examples/
+/helpers/jasmine_examples/
