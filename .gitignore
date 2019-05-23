@@ -3,4 +3,4 @@
 /.cache/
 /spec/jasmine_examples/
 /lib/jasmine_examples/
-/helpers/jasmine_examples/
+/spec/helpers/jasmine_examples/
