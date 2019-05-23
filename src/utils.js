@@ -1,59 +1,47 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
-const normalizeUrl = require('normalize-url');
-const endsWith      = require('ends-with');
-const parse         = require('url-parse');
-const unique        = require('array-unique');
-
-vendi_normalized_url = (url) => {
-    return normalizeUrl(
-                url,
-                {
-                    normalizeHttp: true,
-                    stripWWW: false,
-                }
-        );
-}
-
-get_only_clean_urls = async(urls, main_domain) => {
-
-    if(!Array.isArray(urls)){
-        return [];
-    }
+get_unique_urls_from_all_page_elements = (page_url, elements) => {
 
     const
-        http_only = urls
-                        .filter(
-                            (href) => {
-
-                                if(!href){
-                                    return false;
-                                }
-
-                                const
-                                    this_url_parts = parse(href, true)
-                                ;
-
-                                if(this_url_parts.protocol !== 'http:' && this_url_parts.protocol !== 'https:'){
-                                    // console.log('not HTTP');
-                                    return false;
-                                }
-
-                                if(main_domain !== this_url_parts.hostname){
-                                    // console.log(this_url_parts.hostname);
-                                    // console.log('not domain');
-                                    return false;
-                                }
-
-                                return true;
-
-                            }
-                        )
-                        .map(vendi_normalized_url),
-        unique_only = unique(http_only)
+        parse = require('url-parse'),
+        main_domain = parse(page_url).hostname,
     ;
 
-    return unique_only;
+    return elements
+
+                //First get link-like things
+                .filter( element => element.href || element.src )
+
+                //Next, make sure that we can follow them
+                .filter( element => !element.rel && !element.rel.includes('nofollow') )
+
+                //Now get either the actual URL
+                .map( element => element.href || element.src )
+
+                //Get only HTTP(S) links (not mailto, etc.)
+                .filter(
+                    (single_url) => {
+
+                        const
+                            url_parts = parse(single_url, true)
+                        ;
+
+                        if (url_parts.protocol !== 'http:' && url_parts.protocol !== 'https:') {
+                            return false;
+                        }
+
+                        if (main_domain !== url_parts.hostname) {
+                            return false;
+                        }
+
+                        return true;
+
+                    }
+                )
+
+                //Remove duplicates, see https://stackoverflow.com/a/14438954/231316
+                .filter( (single_url, idx, self) => self.indexOf(single_url) === idx )
+    ;
 }
 
-module.exports.get_only_clean_urls = get_only_clean_urls;
+export const get_unique_urls_from_all_page_elements = get_unique_urls_from_all_page_elements;
