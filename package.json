@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./node_modules/nyc/bin/nyc.js ./node_modules/jasmine/bin/jasmine.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "jasmine": "^3.4.0"
+    "jasmine": "^3.4.0",
+    "nyc": "^14.1.1"
   }
 }

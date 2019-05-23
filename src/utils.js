@@ -4,7 +4,7 @@ get_unique_urls_from_all_page_elements = (page_url, elements) => {
 
     const
         parse = require('url-parse'),
-        main_domain = parse(page_url).hostname,
+        main_domain = parse(page_url).hostname
     ;
 
     return elements
@@ -13,7 +13,7 @@ get_unique_urls_from_all_page_elements = (page_url, elements) => {
                 .filter( element => element.href || element.src )
 
                 //Next, make sure that we can follow them
-                .filter( element => !element.rel && !element.rel.includes('nofollow') )
+                .filter( element => !element.rel || !element.rel.includes('nofollow') )
 
                 //Now get either the actual URL
                 .map( element => element.href || element.src )
@@ -44,4 +44,4 @@ get_unique_urls_from_all_page_elements = (page_url, elements) => {
     ;
 }
 
-export const get_unique_urls_from_all_page_elements = get_unique_urls_from_all_page_elements;
+module.exports.get_unique_urls_from_all_page_elements = get_unique_urls_from_all_page_elements;

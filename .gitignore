@@ -4,3 +4,5 @@
 /spec/jasmine_examples/
 /lib/jasmine_examples/
 /spec/helpers/jasmine_examples/
+/.nyc_output/
+/coverage/
