@@ -1,2 +1,4 @@
-reporter: html
+reporter:
+  - html
+  - text
 report-dir: ./coverage

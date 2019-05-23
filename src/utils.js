@@ -4,7 +4,8 @@ get_unique_urls_from_all_page_elements = (page_url, elements) => {
 
     const
         parse = require('url-parse'),
-        main_domain = parse(page_url).hostname
+        main_domain = parse(page_url).hostname,
+        main_protocol = parse(page_url).protocol
     ;
 
     return elements
@@ -19,25 +20,13 @@ get_unique_urls_from_all_page_elements = (page_url, elements) => {
                 .map( element => element.href || element.src )
 
                 //Get only HTTP(S) links (not mailto, etc.)
-                .filter(
-                    (single_url) => {
+                .filter( single_url => ['http:', 'https:'].includes( parse(single_url).protocol ) )
 
-                        const
-                            url_parts = parse(single_url, true)
-                        ;
+                //Check the domain
+                .filter( single_url => main_domain === parse(single_url).hostname )
 
-                        if (url_parts.protocol !== 'http:' && url_parts.protocol !== 'https:') {
-                            return false;
-                        }
-
-                        if (main_domain !== url_parts.hostname) {
-                            return false;
-                        }
-
-                        return true;
-
-                    }
-                )
+                //Assume same protocol as primary URL
+                .map( single_url => parse(single_url, true).set('protocol', main_protocol).toString() )
 
                 //Remove duplicates, see https://stackoverflow.com/a/14438954/231316
                 .filter( (single_url, idx, self) => self.indexOf(single_url) === idx )
