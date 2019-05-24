@@ -1,8 +1,8 @@
-require ('../src/utils');
+import { get_unique_urls_from_all_page_elements, enforce_string_or_array_of_strings } from '../src/utils';
 
 describe("Utils", function () {
 
-    it('filters, maps and uniqifies', () => {
+    it('get_unique_urls_from_all_page_elements filters, maps and uniqifies', () => {
         const
             good_domain = 'www.example.com',
             bad_domain = 'www.example.net',
@@ -40,6 +40,36 @@ describe("Utils", function () {
         ]);
     });
 
-});
+    it('enforce_string_or_array_of_strings works', () => {
 
-// get_unique_urls_from_all_page_elements
+        const
+            func = 'cheese',
+            alpha = 'alpha',
+            beta = 'beta',
+            fail_1 = () => {
+                enforce_string_or_array_of_strings(func, [alpha, beta], [alpha])
+            },
+            fail_2 = () => {
+                enforce_string_or_array_of_strings(func)
+            },
+            fail_3 = () => {
+                enforce_string_or_array_of_strings(func, [''])
+            },
+            fail_4 = () => {
+                enforce_string_or_array_of_strings(func, 5)
+            }
+        ;
+
+        expect(enforce_string_or_array_of_strings(func, alpha)).toEqual([alpha]);
+        expect(enforce_string_or_array_of_strings(func, alpha, beta)).toEqual([alpha, beta]);
+        expect(enforce_string_or_array_of_strings(func, [alpha, beta])).toEqual([alpha, beta]);
+
+
+        expect(fail_1).toThrow(`Argument to ${func} must be a string or array of strings, multi-dimensional array provided.`);
+        expect(fail_2).toThrow(`Argument to ${func} must be a string or array of strings, nothing provided.`);
+        expect(fail_3).toThrow(`Argument to ${func} must be a string or array of strings, array with empty string provided.`);
+        expect(fail_4).toThrow(`Argument to ${func} must be a string or array of strings, number provided.`);
+
+    });
+
+});

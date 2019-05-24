@@ -2,3 +2,4 @@ reporter:
   - html
   - text
 report-dir: ./coverage
+extends: "@istanbuljs/nyc-config-babel"
