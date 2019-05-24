@@ -1,6 +1,6 @@
 /*jslint esversion: 8, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
-import { get_unique_urls_from_all_page_elements } from utils;
+import { get_unique_urls_from_all_page_elements } from './utils';
 
 get_browser = async () => {
     const

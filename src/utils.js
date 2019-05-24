@@ -81,3 +81,7 @@ export const get_unique_urls_from_all_page_elements = (page_url, elements) => {
                 .filter( (single_url, idx, self) => self.indexOf(single_url) === idx )
     ;
 };
+
+export const is_url_html = (url_info = {}) => {
+    return url_info.contentType && (url_info.contentType.includes('text/html') || url_info.contentType.includes('application/xhtml+xml'));
+}

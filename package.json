@@ -5,17 +5,13 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node ./node_modules/nyc/bin/nyc.js ./node_modules/jasmine/bin/jasmine.js"
+    "test": "nyc jasmine",
+    "build": "babel src -d src"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "@babel/register": "^7.4.4",
-    "@istanbuljs/nyc-config-babel": "^2.1.1",
     "axe-core": "^3.1.2",
-    "babel-plugin-istanbul": "^5.1.4",
     "command-line-args": "^5.0.2",
     "cron": "^1.6.0",
     "jsonfile": "^4.0.0",
@@ -26,6 +22,12 @@
     "url-parse": "^1.4.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "@istanbuljs/nyc-config-babel": "^2.1.1",
+    "@babel/cli": "^7.4.4",
+    "babel-plugin-istanbul": "^5.1.4",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "jasmine": "^3.4.0",

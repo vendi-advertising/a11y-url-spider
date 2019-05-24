@@ -1,4 +1,4 @@
-import { get_unique_urls_from_all_page_elements, enforce_string_or_array_of_strings } from '../src/utils';
+import { get_unique_urls_from_all_page_elements, enforce_string_or_array_of_strings, is_url_html } from '../src/utils';
 
 describe("Utils", function () {
 
@@ -69,6 +69,20 @@ describe("Utils", function () {
         expect(fail_2).toThrow(`Argument to ${func} must be a string or array of strings, nothing provided.`);
         expect(fail_3).toThrow(`Argument to ${func} must be a string or array of strings, array with empty string provided.`);
         expect(fail_4).toThrow(`Argument to ${func} must be a string or array of strings, number provided.`);
+
+    });
+
+    it('is_url_html works', () => {
+
+        expect(is_url_html()).toBeFalsy();
+        expect(is_url_html({})).toBeFalsy();
+        expect(is_url_html('')).toBeFalsy();
+
+        expect(is_url_html({ contentType: 'text'})).toBeFalsy();
+
+        expect(is_url_html({ contentType: 'text/html' })).toBeTruthy();
+        expect(is_url_html({ contentType: 'application/xhtml+xml' })).toBeTruthy();
+
 
     });
 

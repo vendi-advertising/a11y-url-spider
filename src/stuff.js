@@ -1,5 +1,7 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
+import { is_url_html } from './utils';
+
 const browser       = require('./browser');
 const fetch         = require('node-fetch');
 
@@ -35,7 +37,7 @@ getUrlInfo = async (url) => {
 };
 
 isUrlHtml = (urlInfo) => {
-    return urlInfo.contentType && (urlInfo.contentType.includes('text/html') || urlInfo.contentType.includes('application/xhtml+xml'));
+    return is_url_html(urlInfo);
 }
 
 async function worker(urls){
