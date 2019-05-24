@@ -1,11 +1,12 @@
 /*jslint esversion: 8, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
 import { get_unique_urls_from_all_page_elements } from './utils';
+import 'puppeteer';
+import 'path';
 
 get_browser = async () => {
+
     const
-        puppeteer = require('puppeteer'),
-        utils = require('./utils'),
         chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}})
     ;
 
@@ -65,9 +66,6 @@ get_urls_on_single_page_as_array_of_strings = async(page_url) => {
 
 get_report_for_url = async(url) => {
     console.debug('Running report for ' + url);
-
-    const puppeteer = require('puppeteer');
-    const path = require('path');
 
     const chrome_browser = await puppeteer.launch({defaultViewport: {width: 1280, height: 1024}});
     const page = await chrome_browser.newPage();

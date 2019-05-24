@@ -2,11 +2,11 @@
   "name": "vendi-a11y-checker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "type": "module",
   "scripts": {
     "test": "nyc jasmine",
-    "build": "babel src -d src"
+    "exec": "NODE_OPTIONS=\"--experimental-modules\" && node ./main.mjs --token=sdsd --host=df --mode=ere"
   },
   "author": "",
   "license": "ISC",
@@ -19,18 +19,17 @@
     "puppeteer": "^1.12.2",
     "sha1": "^1.1.1",
     "sha256": "^0.2.0",
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.4.4",
+    "ws": "^6.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@babel/register": "^7.4.4",
     "@istanbuljs/nyc-config-babel": "^2.1.1",
-    "@babel/cli": "^7.4.4",
     "babel-plugin-istanbul": "^5.1.4",
     "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
     "jasmine": "^3.4.0",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   }
 }

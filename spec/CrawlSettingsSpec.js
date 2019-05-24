@@ -1,4 +1,4 @@
-import CrawlSettings from '../src/CrawlSettings.js';
+import CrawlSettings from '../src/CrawlSettings';
 
 describe("CrawlSettings", function () {
 

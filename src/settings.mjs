@@ -1,6 +1,8 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
-test_node_version = (required_version) => {
+import commandLineArgs from 'command-line-args';
+
+export const test_node_version = (required_version) => {
     const
         version_string = process.version,
         version_parts = version_string.replace(/[^\d\.]/g, '').split('.'),
@@ -12,21 +14,8 @@ test_node_version = (required_version) => {
     }
 }
 
-get_scanner_token = () => {
+export const get_and_validate_scanner_options = () => {
     const
-        args = process.argv.slice(2)
-    ;
-
-    if(!args.length) {
-        throw 'Please provide the scanner token as the first argument';
-    }
-
-    return args.shift();
-};
-
-get_and_validate_scanner_options = () => {
-    const
-        commandLineArgs = require('command-line-args'),
         optionDefinitions = [
             { name: 'token', alias: 't'},
             { name: 'mode', alias: 'm' },
@@ -57,6 +46,3 @@ get_and_validate_scanner_options = () => {
 
     return global_options;
 };
-
-module.exports.test_node_version = test_node_version;
-module.exports.get_and_validate_scanner_options = get_and_validate_scanner_options;

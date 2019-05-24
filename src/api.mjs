@@ -1,6 +1,10 @@
 /*jslint esversion: 6, maxparams: 4, maxdepth: 4, maxstatements: 20, maxcomplexity: 8 */
 
-get_basic_headers = (global_options) => {
+import 'node-fetch';
+import 'http';
+import 'https';
+
+const get_basic_headers = (global_options) => {
     const
         headers = {
             'X-AUTH-TOKEN': global_options.token,
@@ -14,9 +18,8 @@ get_basic_headers = (global_options) => {
     return headers;
 };
 
-get_urls_to_spider = async (global_options) => {
+export const get_urls_to_spider = async (global_options) => {
     const
-        fetch = require('node-fetch'),
         url = get_url_from_options(global_options, 'get'),
         headers = get_basic_headers(global_options),
         agent = get_requestor(global_options),
@@ -34,9 +37,8 @@ get_urls_to_spider = async (global_options) => {
     return [...urls];
 };
 
-send_url_report_to_server = async(global_options, report) => {
+export const send_url_report_to_server = async(global_options, report) => {
     const
-        fetch = require('node-fetch'),
         url = get_url_from_options(global_options, 'submit'),
         headers = get_basic_headers(global_options),
         agent = get_requestor(global_options),
@@ -68,11 +70,11 @@ send_url_report_to_server = async(global_options, report) => {
         throw 'Error';
     }
 
-    
+
     // console.dir(body);
 };
 
-get_url_from_options = (global_options, direction) => {
+const get_url_from_options = (global_options, direction) => {
     let
         url = 'http'
     ;
@@ -122,10 +124,9 @@ get_url_from_options = (global_options, direction) => {
     return url;
 }
 
-get_requestor = (global_options) => {
+const get_requestor = (global_options) => {
     if(global_options.secure){
         const
-            https = require("https"),
             agent = new https.Agent(
                 {
                     rejectUnauthorized: false
@@ -137,12 +138,8 @@ get_requestor = (global_options) => {
     }
 
     const
-        http = require("http"),
         agent = new http.Agent()
     ;
 
     return agent;
 }
-
-module.exports.get_urls_to_spider = get_urls_to_spider;
-module.exports.send_url_report_to_server = send_url_report_to_server;

@@ -2,13 +2,9 @@
 
 import { is_url_html } from './utils';
 
-const browser       = require('./browser');
-const fetch         = require('node-fetch');
-
-
 //Sorry for the stupid name, just need to organize things a bit!!!
 
-getUrlInfo = async (url) => {
+export const getUrlInfo = async (url) => {
     const
         ret = {
             url,
@@ -36,11 +32,11 @@ getUrlInfo = async (url) => {
     return ret;
 };
 
-isUrlHtml = (urlInfo) => {
+const isUrlHtml = (urlInfo) => {
     return is_url_html(urlInfo);
 }
 
-async function worker(urls){
+export const worker = async (urls) => {
 
     const
         ret = []
@@ -64,7 +60,7 @@ async function worker(urls){
     return ret;
 };
 
-async function worker_a11y(urls){
+export const worker_a11y = async (urls) => {
 
     const
         ret = []
@@ -84,6 +80,3 @@ async function worker_a11y(urls){
 
     return ret;
 };
-
-module.exports.worker = worker;
-module.exports.worker_a11y = worker_a11y;
