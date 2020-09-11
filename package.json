@@ -15,7 +15,7 @@
     "command-line-args": "^5.0.2",
     "cron": "^1.6.0",
     "jsonfile": "^4.0.0",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.1",
     "puppeteer": "^1.12.2",
     "sha1": "^1.1.1",
     "sha256": "^0.2.0",
