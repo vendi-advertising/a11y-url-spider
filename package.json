@@ -20,7 +20,7 @@
     "sha1": "^1.1.1",
     "sha256": "^0.2.0",
     "url-parse": "^1.4.4",
-    "ws": "^6.1.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
